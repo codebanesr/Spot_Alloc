@@ -1,0 +1,10 @@
+# Ansible playbook AWS - install docker
+---
+- name: "AWS - Install zsh"
+  hosts: server
+  tasks:
+    - name: "Install zsh with yum"
+      shell: "sudo yum install zsh -y"
+
+    - name: "Install ohmysh"
+      shell: 'sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"'

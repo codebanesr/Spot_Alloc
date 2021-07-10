@@ -1,0 +1,35 @@
+- name: "AWS - Install kubectl, stern & kind"
+  hosts: server
+  tasks:
+    - name: Install Kubectl
+      shell: "sudo curl -LO https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+
+    - name: Download sha256 Checksum
+      shell: "curl -LO https://dl.k8s.io/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl.sha256"
+
+    - name: Ensure checksum
+      shell: "$(<kubectl.sha256) kubectl | `sha256sum --check`"
+
+    - name: Install binary in /usr/local/bin
+      shell: "sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl"
+
+    - name: Download kind
+      shell: "sudo curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.11.1/kind-linux-amd64"
+
+    - name: Add executable permission to kind
+      shell: "sudo chmod +x ./kind"
+
+    - name: Move Kind to /usr/local/bin
+      shell: "sudo mv kind /usr/local/bin/"
+
+    - name: Download stern binary
+      shell: "sudo wget https://github.com/wercker/stern/releases/download/1.11.0/stern_darwin_amd64"
+
+    - name: Adding executable permission to stern
+      shell: "sudo chmod +x stern_darwin_amd64"
+    
+    - name: Rename binary to stern
+      shell: "sudo mv stern_darwin_amd64 stern"
+
+    - name: Move stern to /usr/local/bin
+      shell: "sudo mv stern /usr/local/bin/"

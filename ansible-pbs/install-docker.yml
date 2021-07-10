@@ -1,0 +1,32 @@
+- name: "AWS - Install docker"
+  hosts: server
+  tasks:
+    - name: Update all packages
+      shell: "sudo yum update -y"
+
+    - name: Install docker-ce (centos) via amazon-linux-extras packages
+      shell: "sudo amazon-linux-extras install docker -y"
+    
+    - name: Add user to docker
+      shell: "sudo usermod -a -G docker ec2-user"
+          
+    - name: Automatically start docker on boot
+      shell: "sudo chkconfig docker on"
+    
+    - name: Install Git
+      shell: "sudo yum install -y git"
+
+    - name: Install docker compose with curl
+      shell: "sudo curl -L https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose"
+
+    - name: "Add executable permissions to the binary"
+      shell: "sudo chmod +x /usr/local/bin/docker-compose"
+
+    # - name: "Log docker-compose version"
+    #   shell: "sudo docker-compose version"
+
+    - name: "Install zsh with yum"
+      shell: "sudo yum install zsh -y"
+
+    - name: "Install ohmysh"
+      shell: "sudo sh -c '$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)'"
